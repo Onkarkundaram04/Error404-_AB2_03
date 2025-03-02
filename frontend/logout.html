@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clinical Dashboard - Logout</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/logout.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="menu">
+                <a href="home.html" class="menu-item">Home</a>
+                <a href="index.html" class="menu-item">Patient Records</a>
+                <a href="appointments.html" class="menu-item">Appointments</a>
+                <a href="logout.html" class="menu-item active">Logout</a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1>Logout</h1>
+            </div>
+
+            <!-- Logout Content -->
+            <div class="content-wrapper">
+                <div class="logout-container">
+                    <div class="logout-message">
+                        <h2>Are you sure you want to log out?</h2>
+                        <p>You will be signed out of your account. Please confirm to proceed.</p>
+                    </div>
+                    <div class="logout-actions">
+                        <button class="logout-button confirm">Log Out</button>
+                        <button class="logout-button cancel">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/router.js"></script>
+    <script src="js/logout.js"></script>
+    <script>
+  
+        if (sessionStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = 'login.html';
+        }
+    </script>
+    <script src="js/auth.js"></script>
+</body>
+</html>
