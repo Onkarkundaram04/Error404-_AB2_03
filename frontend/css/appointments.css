@@ -1,0 +1,101 @@
+/* Appointments Page Specific Styles */
+.appointments-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.appointments-section {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.appointment-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.appointment-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border-radius: 8px;
+    background: #f8fafc;
+    border-left: 4px solid #3b82f6;
+    transition: all 0.2s ease;
+}
+
+.appointment-card.past {
+    border-left-color: #6b7280;
+    opacity: 0.8;
+}
+
+.appointment-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.appointment-time {
+    font-weight: 600;
+    color: #1f2937;
+    min-width: 80px;
+}
+
+.appointment-details {
+    flex: 1;
+    margin: 0 1.5rem;
+}
+
+.patient-name {
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.appointment-reason {
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+.action-button {
+    padding: 0.5rem 1rem;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.action-button:hover {
+    background: #2563eb;
+}
+
+.new-appointment {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.primary-button {
+    padding: 0.75rem 1.5rem;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.primary-button:hover {
+    background: #2563eb;
+    transform: translateY(-2px);
+}
+
+.primary-button .icon {
+    margin-right: 0.5rem;
+}
