@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clinical Dashboard</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .analysis-complete {
+      color: green;
+      font-weight: bold;
+      font-size: 1.2em;
+      margin-top: 20px;
+      text-align: center;
+    }
+    .analysis-complete::before {
+      content: "✓";
+      margin-right: 10px;
+      color: green;
+      font-size: 1.5em;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <div class="sidebar">
+      <div class="menu">
+        <a href="home.html" class="menu-item active">Home</a>
+        <a href="index.html" class="menu-item">Patient Records</a>
+        <a href="appointments.html" class="menu-item">Appointments</a>
+        <a href="logout.html" class="menu-item">Logout</a>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="header">
+        <h1>Patient Dashboard</h1>
+        <input type="text" placeholder="Search patient records, guidelines..." class="search-bar">
+      </div>
+
+      <div class="content-wrapper">
+        <div class="patient-details">
+          <div class="detail-card">
+            <label>Patient Name</label>
+            <div id="patientName">N/A</div>
+          </div>
+          <div class="detail-card">
+            <label>Age</label>
+            <div id="patientAge">N/A</div>
+          </div>
+          <div class="detail-card">
+            <label>Medical History</label>
+            <div id="patientHistory">N/A</div>
+          </div>
+        </div>
+
+        <div class="recommendations" id="recommendations">
+          <!-- Recommendations will be inserted here -->
+        </div>
+
+        <div class="upload-section">
+          <div class="upload-box" id="uploadContainer">
+            <label for="file-upload" class="custom-file-upload" id="uploadLabel">
+              <span id="uploadText">Upload Patient Record (TXT)</span>
+              <input id="file-upload" type="file" accept=".txt,text/plain" onchange="uploadTXT(this.files)" style="display: none;" />
+            </label>
+            <div id="uploadStatus" style="display: none;">✓ Upload Successful</div>
+          </div>
+        </div>
+
+        <div class="notifications">
+          <strong>New Guideline Update:</strong> 
+          2024 ADA Standards of Care now recommends SGLT2 inhibitors for patients with chronic kidney disease and type 2 diabetes.
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="js/router.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    function uploadTXT(files) {
+      if (!files.length) return;
+      const file = files[0];
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const uploadStatus = document.getElementById('uploadStatus');
+      uploadStatus.style.display = "block";
+      uploadStatus.textContent = "Uploading...";
+
+      fetch("/upload-txt", {
+        method: "POST",
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log("Received Data:", data);
+        if (data.error) {
+          alert("Error: " + data.error);
+          uploadStatus.style.display = "none";
+          return;
+        }
+
+        if (data.patientData) {
+          console.log("Patient Data:", data.patientData);
+          document.getElementById("patientName").textContent = data.patientData["Patient Name"] || "N/A";
+          document.getElementById("patientAge").textContent = data.patientData["Age"] || "N/A";
+          document.getElementById("patientHistory").textContent = data.patientData["Medical History"] || "N/A";
+        } else {
+          console.log("No patientData received");
+        }
+
+        const recommendationsDiv = document.getElementById("recommendations");
+        recommendationsDiv.innerHTML = "";
+        if (data.recommendations && data.recommendations.length > 0) {
+          data.recommendations.forEach((recommendation, index) => {
+            const card = document.createElement("div");
+            card.className = "recommendation-card";
+            const header = document.createElement("h3");
+            header.textContent = `Recommendation ${index + 1}`;
+            const para = document.createElement("p");
+            para.textContent = recommendation;
+            card.appendChild(header);
+            card.appendChild(para);
+            recommendationsDiv.appendChild(card);
+          });
+        }
+
+        // Hide the upload box and show "Analysis Complete" message
+        const uploadContainer = document.getElementById("uploadContainer");
+        uploadContainer.style.display = "none"; // Hide the upload box
+
+        const analysisComplete = document.createElement("div");
+        analysisComplete.className = "analysis-complete";
+        analysisComplete.textContent = "Analysis Complete";
+        document.querySelector(".upload-section").appendChild(analysisComplete);
+
+        uploadStatus.textContent = "✓ Analysis Complete";
+        setTimeout(() => {
+          uploadStatus.style.display = "none";
+        }, 3000);
+      })
+      .catch(error => {
+        alert("Error uploading file: " + error.message);
+        uploadStatus.style.display = "none";
+      });
+    }
+  </script>
+</body>
+</html>
