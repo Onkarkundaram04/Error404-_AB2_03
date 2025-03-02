@@ -1,0 +1,8 @@
+datasets
+sentence-transformers
+faiss-cpu
+transformers
+pdfplumber
+flask
+numpy
+flask
