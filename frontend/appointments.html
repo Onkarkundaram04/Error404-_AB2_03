@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clinical Dashboard - Appointments</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/appointments_modified.css">
+    <link rel="stylesheet" href="css/appoitment_modi.css">
+    <script src="stats_fronted.js"></script>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="menu">
+                <a href="home.html" class="menu-item">Home</a>
+                <a href="index.html" class="menu-item">Patient Records</a>
+                <a href="appointments.html" class="menu-item active">Appointments</a>
+                <a href="logout.html" class="menu-item">Logout</a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1>Appointments</h1>
+                <input type="text" id="searchBar" placeholder="Search appointments..." class="search-bar">
+            </div>
+
+            <!-- Appointments Content -->
+            <div class="content-wrapper">
+                <div class="appointments-section" id="upcomingAppointments">
+                    <h2>Upcoming Appointments</h2>
+                    <div class="appointment-list" id="appointmentList">
+                        <div class="appointment-card status-upcoming">
+                            <div class="appointment-time">10:00 AM</div>
+                            <div class="appointment-details">
+                                <div class="patient-name">John Doe</div>
+                                <div class="appointment-reason">Follow-up: Hypertension</div>
+                            </div>
+                            <div class="button-group">
+                                <button class="action-button">View</button>
+                                <button class="action-button reschedule">Reschedule</button>
+                                <button class="action-button cancel">Cancel</button>
+                            </div>
+                        </div>
+                        <div class="appointment-card status-upcoming">
+                            <div class="appointment-time">11:30 AM</div>
+                            <div class="appointment-details">
+                                <div class="patient-name">Pankaj Jain</div>
+                                <div class="appointment-reason">Routine Checkup</div>
+                            </div>
+                            <div class="button-group">
+                                <button class="action-button">View</button>
+                                <button class="action-button reschedule">Reschedule</button>
+                                <button class="action-button cancel">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- New Appointment Form -->
+                <div class="new-appointment">
+                    <button id="newAppointmentBtn" class="primary-button">
+                        <span class="icon">➕</span> Schedule New Appointment
+                    </button>
+                    <div id="appointmentFormContainer" class="hidden">
+                        <hr style="margin: 20px 0; border: 1px solid #ddd;">
+                        <div id="appointmentForm" class="appointment-form">
+                            <h3>New Appointment</h3>
+                            <input type="text" id="patientName" placeholder="Patient Name">
+                            <input type="datetime-local" id="appointmentTime">
+                            <input type="text" id="appointmentReason" placeholder="Reason">
+                            <div class="button-group" style="margin-top: 15px; display: flex; gap: 10px;">
+                                <button class="primary-button" onclick="addAppointment()">Add</button>
+                                <button class="primary-button cancel" onclick="closeAppointmentForm()">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="chatbot" class="chatbot">
+        <button id="chatbotToggle">💬 Chat with Assistant</button>
+        <div id="chatbotWindow" class="hidden">
+            <p>Hello! How can I assist you today?</p>
+        </div>
+    </div>
+
+    <script src="js/router.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        document.getElementById('newAppointmentBtn').addEventListener('click', function() {
+            document.getElementById('appointmentFormContainer').classList.toggle('hidden');
+        });
+
+        function addAppointment() {
+            let name = document.getElementById('patientName').value;
+            let time = document.getElementById('appointmentTime').value;
+            let reason = document.getElementById('appointmentReason').value;
+
+            if (!name || !time || !reason) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            let appointmentList = document.getElementById('appointmentList');
+            let newAppointment = document.createElement('div');
+            newAppointment.classList.add('appointment-card', 'status-upcoming');
+            newAppointment.innerHTML = `
+                <div class="appointment-time">${new Date(time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                <div class="appointment-details">
+                    <div class="patient-name">${name}</div>
+                    <div class="appointment-reason">${reason}</div>
+                </div>
+                <div class="button-group">
+                    <button class="action-button">View</button>
+                    <button class="action-button reschedule">Reschedule</button>
+                    <button class="action-button cancel" onclick="this.parentElement.parentElement.remove()">Cancel</button>
+                </div>
+            `;
+            appointmentList.appendChild(newAppointment);
+            alert('Appointment Added Successfully!');
+            closeAppointmentForm();
+        }
+
+        function closeAppointmentForm() {
+            document.getElementById('appointmentFormContainer').classList.add('hidden');
+            document.getElementById('patientName').value = '';
+            document.getElementById('appointmentTime').value = '';
+            document.getElementById('appointmentReason').value = '';
+        }
+
+        document.getElementById('chatbotToggle').addEventListener('click', function() {
+            document.getElementById('chatbotWindow').classList.toggle('hidden');
+        });
+    </script> 
+</body>
+</html>
