@@ -1,0 +1,158 @@
+/* Appointments Page Specific Styles */
+
+/* Background Styling */
+body {
+    background: #ffffff;
+    font-family: 'Inter', sans-serif;
+    color: #333;
+}
+
+/* Main Content Container */
+.main-content {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+}
+
+.appointments-section {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.appointment-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.appointment-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border-radius: 10px;
+    background: #f8f9fa;
+    border-left: 6px solid #007bff;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Color-coded status */
+.appointment-card.status-upcoming { border-left-color: #4caf50; background: #e8f5e9; }
+.appointment-card.status-past { border-left-color: #6b7280; background: #eceff1; }
+.appointment-card.status-cancelled { border-left-color: #ff5252; background: #ffebee; }
+
+.appointment-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.appointment-time {
+    font-weight: 700;
+    color: #007bff;
+    min-width: 90px;
+}
+
+.appointment-details {
+    flex: 1;
+    margin: 0 1.5rem;
+}
+
+.patient-name {
+    font-weight: 700;
+    color: #333;
+}
+
+.appointment-reason {
+    color: #555;
+    font-size: 0.9rem;
+}
+
+/* Input Fields for New Appointments */
+#appointmentForm input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #007bff;
+    border-radius: 8px;
+    background: #e3f2fd;
+    font-size: 1rem;
+}
+
+#appointmentForm input:focus {
+    outline: none;
+    border-color: #0056b3;
+    background: #bbdefb;
+}
+
+/* Buttons */
+.action-button {
+    padding: 0.6rem 1.2rem;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin-left: 8px;
+}
+
+.action-button.reschedule { background: #ffc107; }
+.action-button.cancel { background: #ff5252; }
+
+.action-button:hover {
+    filter: brightness(0.9);
+    transform: scale(1.05);
+}
+
+/* New Appointment Section */
+.new-appointment {
+    margin-top: 3rem;
+    text-align: center;
+}
+
+.primary-button {
+    padding: 1rem 2rem;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+.primary-button:hover {
+    background: #0056b3;
+    transform: translateY(-3px);
+}
+
+.primary-button .icon {
+    margin-right: 0.7rem;
+}
+
+/* Sidebar Enhancements */
+.sidebar {
+    background: #ffffff;
+    color: black;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.sidebar .menu-item {
+    color: black;
+    font-weight: bold;
+    padding: 10px;
+    display: block;
+    transition: background 0.3s;
+}
+.sidebar .menu-item:hover {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}

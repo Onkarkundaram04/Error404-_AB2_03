@@ -1,0 +1,134 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 90%;
+    margin: auto;
+    padding: 20px;
+}
+
+/* Sidebar */
+.sidebar {
+    background: white;
+    padding: 20px;
+    min-height: 100vh;
+    width: 250px;
+    position: fixed;
+}
+
+.sidebar a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: #333;
+}
+
+.sidebar a:hover {
+    background: #007bff;
+    color: white;
+}
+
+/* Main Content */
+.main-content {
+    margin-left: 270px;
+    padding: 20px;
+}
+
+h1 {
+    color: #333;
+}
+
+/* Appointment Cards */
+.appointment-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.appointment {
+    background: #e3f2fd;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+.appointment p {
+    margin: 5px 0;
+}
+
+.appointment button {
+    margin-right: 10px;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.appointment button:nth-child(2) {
+    background: #28a745;
+    color: white;
+}
+
+.appointment button:nth-child(3) {
+    background: #ffc107;
+    color: white;
+}
+
+.appointment button:nth-child(4) {
+    background: #dc3545;
+    color: white;
+}
+
+/* Forms */
+.hidden {
+    display: none;
+}
+
+#appointmentForm, #rescheduleForm {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    margin-top: 20px;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#newAppointmentBtn {
+    background: #007bff;
+    color: white;
+}
+
+#rescheduleBtn {
+    background: #28a745;
+    color: white;
+}
+
+/* Analytics Chart */
+.chart-container {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
