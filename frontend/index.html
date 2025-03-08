@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clinical Dashboard</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .analysis-complete {
+      color: green;
+      font-weight: bold;
+      font-size: 1.2em;
+      margin-top: 20px;
+      text-align: center;
+    }
+    .analysis-complete::before {
+      content: "✓";
+      margin-right: 10px;
+      color: green;
+      font-size: 1.5em;
+    }
+    .section {
+      background: #ffffff;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .section h2 {
+      border-bottom: 2px solid #3b82f6;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+      color: #3b82f6;
+    }
+    .section ul {
+      list-style: none;
+      padding-left: 1rem;
+    }
+    .section ul li {
+      margin-bottom: 0.5rem;
+      line-height: 1.5;
+    }
+    .section ul li strong {
+      color: #3b82f6;
+    }
+    .patient-summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .patient-summary-box {
+      flex: 1;
+      background: #f9fafb;
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .patient-summary-box label {
+      font-weight: bold;
+      color: #3b82f6;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    .references {
+      background: #f9fafb;
+      padding: 1rem;
+      border-left: 4px solid #3b82f6;
+      border-radius: 8px;
+      margin-top: 1.5rem;
+    }
+    .references h3 {
+      margin-bottom: 0.5rem;
+    }
+    .references ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    .references ul li {
+      margin-bottom: 0.5rem;
+    }
+    .references ul li a {
+      color: #3b82f6;
+      text-decoration: none;
+    }
+    .references ul li a:hover {
+      text-decoration: underline;
+    }
+    .reference-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      background-color: #e6f0ff;
+      border: 1px solid #3b82f6;
+      border-radius: 4px;
+      margin-right: 5px;
+      font-size: 0.9em;
+    }
+    /* New styles for search results */
+    .search-results {
+      margin-top: 1rem;
+    }
+    .result-item {
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .result-item h3 {
+      margin-bottom: 0.5rem;
+    }
+    .result-item h3 a {
+      color: #3b82f6;
+      text-decoration: none;
+    }
+    .result-item h3 a:hover {
+      text-decoration: underline;
+    }
+    .result-meta {
+      margin-top: 0.5rem;
+      display: flex;
+      gap: 1rem;
+    }
+    .relevance-badge {
+      background-color: #e6f0ff;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+    .filter-container {
+      margin: 1rem 0;
+      display: flex;
+      gap: 0.5rem;
+    }
+    .filter-container input {
+      flex: 1;
+      padding: 0.5rem;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+    }
+    .filter-container button, 
+    .back-button {
+      padding: 0.5rem 1rem;
+      background-color: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .filter-container button:hover,
+    .back-button:hover {
+      background-color: #2563eb;
+    }
+    .loading, 
+    .error {
+      padding: 2rem;
+      text-align: center;
+      background: #f9fafb;
+      border-radius: 8px;
+      margin: 1rem 0;
+    }
+    .error {
+      color: #dc2626;
+      background: #fee2e2;
+    }
+    /* Search container styles */
+    .search-container {
+      position: relative;
+      display: flex;
+      gap: 8px;
+    }
+    .search-button {
+      padding: 8px 12px;
+      background: #3b82f6;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+    .search-button:hover {
+      background: #2563eb;
+    }
+    .research-badge {
+      background-color: #fff3e0;
+      border-color: #ffb74d;
+    }
+    .paper-meta {
+      font-size: 0.9em;
+      color: #666;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <div class="sidebar">
+      <div class="menu">
+        <a href="home.html" class="menu-item active">Home</a>
+        <a href="index.html" class="menu-item">Patient Records</a>
+        <a href="appointments.html" class="menu-item">Appointments</a>
+        <a href="logout.html" class="menu-item">Logout</a>
+      </div>
+    </div>
+    <div class="main-content">
+      <div class="header">
+        <h1>Patient Dashboard</h1>
+        <div class="search-container">
+          <input type="text" placeholder="Search symptoms, diseases, guidelines..." class="search-bar" />
+          <button class="search-button" onclick="performSearch()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="content-wrapper">
+        <div class="section patient-summary">
+          <h2>Patient Summary</h2>
+          <div class="patient-summary-row">
+            <div class="patient-summary-box">
+              <label>Name</label>
+              <div id="patientName">N/A</div>
+            </div>
+            <div class="patient-summary-box">
+              <label>Age</label>
+              <div id="patientAge">N/A</div>
+            </div>
+            <div class="patient-summary-box">
+              <label>Medical History</label>
+              <div id="patientHistory">N/A</div>
+            </div>
+          </div>
+        </div>
+        <div class="section risk-assessment" id="riskAssessment" style="display: none;"></div>
+        <div class="section treatment-recommendations" id="treatmentRecommendations" style="display: none;"></div>
+        <div class="references" id="references" style="display: none;">
+          <h3>References</h3>
+          <ul id="referencesList"></ul>
+        </div>
+        <div class="upload-section">
+          <div class="upload-box" id="uploadContainer">
+            <label for="file-upload" class="custom-file-upload" id="uploadLabel">
+              <span id="uploadText">Upload Patient Record (TXT)</span>
+              <input id="file-upload" type="file" accept=".txt,text/plain" onchange="uploadTXT(this.files)" style="display: none;" />
+            </label>
+            <div id="uploadStatus" style="display: none;">✓ Upload Successful</div>
+          </div>
+        </div>
+        <div class="notifications">
+          <strong>Disclaimer :</strong> This is an AI-powered tool to assist doctors in making better decisions. Always consult a medical professional before making any decisions.
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="js/router.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    function extractURLsAndGuidelines(text) {
+      const urlRegex = /(https?:\/\/[^\s]+)/g;
+      const urls = text.match(urlRegex) || [];
+      const guidelineRegex = /\[Guideline #\d+\]/g;
+      const guidelines = text.match(guidelineRegex) || [];
+      return { urls, guidelines };
+    }
+
+    function uploadTXT(files) {
+      if (!files.length) return;
+      const file = files[0];
+      const formData = new FormData();
+      formData.append('file', file);
+      const uploadStatus = document.getElementById('uploadStatus');
+      uploadStatus.style.display = "block";
+      uploadStatus.textContent = "Uploading...";
+      fetch("/upload-txt", {
+        method: "POST",
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log("Received Data:", data);
+        if (data.error) {
+          alert("Error: " + data.error);
+          uploadStatus.style.display = "none";
+          return;
+        }
+        // Update Patient Summary using extracted patient_info
+        if (data.patient_info) {
+          document.getElementById("patientName").textContent = data.patient_info.name || "N/A";
+          document.getElementById("patientAge").textContent = data.patient_info.age || "N/A";
+          document.getElementById("patientHistory").textContent = data.patient_info.history || "N/A";
+          console.log("Patient Info:", data.patient_info);
+        } else {
+          console.log("No patient_info in response");
+        }
+        // Display Risk Assessment
+        if (data.risk_assessment) {
+          const riskDiv = document.getElementById("riskAssessment");
+          riskDiv.style.display = "block";
+          riskDiv.innerHTML = `<h2>Risk Assessment</h2>${data.risk_assessment}`;
+        }
+        // Display Treatment Recommendations
+        if (data.recommendations) {
+          const treatmentDiv = document.getElementById("treatmentRecommendations");
+          treatmentDiv.style.display = "block";
+          treatmentDiv.innerHTML = `<h2>Treatment Recommendations</h2>${data.recommendations}`;
+        }
+        // Extract and Display References
+        let combinedText = (data.risk_assessment || "") + " " + (data.recommendations || "");
+        const { urls, guidelines } = extractURLsAndGuidelines(combinedText);
+        const referencesSection = document.getElementById("references");
+        const referencesList = document.getElementById("referencesList");
+        referencesList.innerHTML = "";
+        let hasReferences = false;
+        if (data.references && data.references.length > 0) {
+          data.references.forEach(reference => {
+            if (reference.name && reference.url) {
+              const li = document.createElement("li");
+              li.innerHTML = `<a href="${reference.url}" target="_blank" class="reference-badge">${reference.name}</a>`;
+              referencesList.appendChild(li);
+              hasReferences = true;
+            } else if (typeof reference === 'string') {
+              const li = document.createElement("li");
+              const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(reference)}+medical+guidelines`;
+              li.innerHTML = `<a href="${searchUrl}" target="_blank" class="reference-badge">${reference}</a>`;
+              referencesList.appendChild(li);
+              hasReferences = true;
+            }
+          });
+        }
+        if (urls.length > 0) {
+          urls.forEach(url => {
+            const li = document.createElement("li");
+            li.innerHTML = `<a href="${url}" target="_blank">${url}</a>`;
+            referencesList.appendChild(li);
+            hasReferences = true;
+          });
+        }
+        if (guidelines.length > 0) {
+          guidelines.forEach(guideline => {
+            const li = document.createElement("li");
+            li.textContent = guideline;
+            referencesList.appendChild(li);
+            hasReferences = true;
+          });
+        }
+        referencesSection.style.display = hasReferences ? "block" : "none";
+        document.getElementById("uploadContainer").style.display = "none";
+        const analysisComplete = document.createElement("div");
+        analysisComplete.className = "analysis-complete";
+        analysisComplete.textContent = "Analysis Complete";
+        document.querySelector(".upload-section").appendChild(analysisComplete);
+        uploadStatus.textContent = "✓ Analysis Complete";
+        setTimeout(() => { uploadStatus.style.display = "none"; }, 3000);
+      })
+      .catch(error => {
+        console.error("Error uploading file:", error);
+        alert("Error uploading file: " + error.message);
+        uploadStatus.style.display = "none";
+      });
+    }
+
+    function performSearch() {
+      const query = document.querySelector('.search-bar').value.trim();
+      if (!query) return;
+      const mainContent = document.querySelector('.content-wrapper');
+      mainContent.innerHTML = '<div class="loading">Searching medical knowledge and recent research...</div>';
+      fetch(`/search?q=${encodeURIComponent(query)}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) throw new Error(data.error);
+        displaySearchResults(data, query);
+      })
+      .catch(error => {
+        mainContent.innerHTML = `<div class="error">Error: ${error.message}</div>`;
+      });
+    }
+
+    function displaySearchResults(data, query) {
+      const mainContent = document.querySelector('.content-wrapper');
+      
+      let resultsHTML = `
+        <div class="section">
+          <h2>Search Results for "${query}"</h2>
+          <div class="filter-container">
+            <input type="text" id="keywords-filter" placeholder="Filter by keywords (comma separated)" />
+            <button onclick="applyKeywordFilter('${query}')">Apply Filter</button>
+          </div>
+          <div class="search-results">`;
+      
+      if (data.results.length === 0) {
+        resultsHTML += `<p>No results found for your query.</p>`;
+      } else {
+        data.results.forEach(result => {
+          const authorsDisplay = Array.isArray(result.authors)
+            ? result.authors.join(', ')
+            : (result.authors || 'Unknown authors');
+            
+          resultsHTML += `
+            <div class="result-item">
+              <h3>
+                <a href="${result.url}" target="_blank">
+                  ${result.title}
+                  ${result.type === 'research' ? 
+                    '<span class="reference-badge research-badge">New Research</span>' : ''}
+                </a>
+              </h3>`;
+
+          if (result.type === 'research') {
+            resultsHTML += `
+              <div class="paper-meta">
+                ${authorsDisplay} · 
+                ${result.journal} · 
+                ${result.date}
+              </div>`;
+          }
+            
+          resultsHTML += `
+              <p>${result.snippet}</p>
+              <div class="result-meta">
+                <span class="reference-badge">Source: ${result.source}</span>
+                <span class="relevance-badge">Relevance: ${result.relevance}%</span>
+              </div>
+            </div>`;
+        });
+      }
+      
+      resultsHTML += `</div></div>`;
+      
+      // Add return button
+      resultsHTML += `
+        <div class="section">
+          <button onclick="resetDashboard()" class="back-button">Return to Dashboard</button>
+        </div>`;
+      
+      mainContent.innerHTML = resultsHTML;
+    }
+
+    function applyKeywordFilter(originalQuery) {
+      const keywordsInput = document.getElementById('keywords-filter');
+      if (!keywordsInput) return;
+      const keywords = keywordsInput.value.split(',').map(k => k.trim()).filter(k => k);
+      if (keywords.length === 0) return;
+      let url = `/search?q=${encodeURIComponent(originalQuery)}`;
+      keywords.forEach(keyword => {
+        url += `&keywords=${encodeURIComponent(keyword)}`;
+      });
+      const mainContent = document.querySelector('.content-wrapper');
+      mainContent.innerHTML = '<div class="loading">Filtering results...</div>';
+      fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) {
+          alert("Error: " + data.error);
+          return;
+        }
+        displaySearchResults(data, originalQuery);
+      })
+      .catch(error => {
+        console.error("Error during filtering:", error);
+        mainContent.innerHTML = `<div class="error">Error: ${error.message}</div>`;
+      });
+    }
+
+    function resetDashboard() {
+      location.reload();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clinical Dashboard - Appointments</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/appointments.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="menu">
+                <a href="home.html" class="menu-item">Home</a>
+                <a href="index.html" class="menu-item">Patient Records</a>
+                <a href="appointments.html" class="menu-item active">Appointments</a>
+                <a href="logout.html" class="menu-item">Logout</a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1>Appointments</h1>
+                <input type="text" 
+                       placeholder="Search appointments..." 
+                       class="search-bar">
+            </div>
+
+            <!-- Appointments Content -->
+            <div class="content-wrapper">
+                <div class="appointments-grid">
+                    <!-- Upcoming Appointments -->
+                    <div class="appointments-section">
+                        <h2>Upcoming Appointments</h2>
+                        <div class="appointment-list">
+                            <div class="appointment-card">
+                                <div class="appointment-time">10:00 AM</div>
+                                <div class="appointment-details">
+                                    <div class="patient-name">John Doe</div>
+                                    <div class="appointment-reason">Follow-up: Hypertension</div>
+                                </div>
+                                <button class="action-button">View</button>
+                            </div>
+                            <div class="appointment-card">
+                                <div class="appointment-time">02:30 PM</div>
+                                <div class="appointment-details">
+                                    <div class="patient-name">Sarah Smith</div>
+                                    <div class="appointment-reason">New Patient Consultation</div>
+                                </div>
+                                <button class="action-button">View</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Past Appointments -->
+                    <div class="appointments-section">
+                        <h2>Past Appointments</h2>
+                        <div class="appointment-list">
+                            <div class="appointment-card past">
+                                <div class="appointment-time">09:00 AM</div>
+                                <div class="appointment-details">
+                                    <div class="patient-name">Michael Brown</div>
+                                    <div class="appointment-reason">Diabetes Checkup</div>
+                                </div>
+                                <button class="action-button">Details</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- New Appointment Button -->
+                <div class="new-appointment">
+                    <button class="primary-button">
+                        <span class="icon">➕</span>
+                        Schedule New Appointment
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/router.js"></script>
+    <script>
+        // Redirect to login if not authenticated
+        if (sessionStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = 'login.html';
+        }
+    </script>
+    <script src="js/auth.js"></script>
+</body>
+</html>
